@@ -1,6 +1,6 @@
 package by.bobsans.boblib.gui.widgets;
 
-import by.bobsans.boblib.gui.screens.ConfigScreen;
+import by.bobsans.boblib.gui.screens.ConfigScreenBase;
 import by.bobsans.boblib.gui.widgets.value.OptionsEntryValue;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
@@ -13,10 +13,10 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class OptionsListWidget extends AbstractList<OptionsListWidget.Entry> {
-    private final ConfigScreen owner;
+    private final ConfigScreenBase owner;
     private final Runnable diskWriter;
 
-    private OptionsListWidget(ConfigScreen owner, Minecraft minecraft, int width, int height, int x, int y, int entryHeight, Runnable diskWriter) {
+    private OptionsListWidget(ConfigScreenBase owner, Minecraft minecraft, int width, int height, int x, int y, int entryHeight, Runnable diskWriter) {
         super(minecraft, width, height, x, y, entryHeight);
 
         this.owner = owner;
@@ -24,7 +24,7 @@ public class OptionsListWidget extends AbstractList<OptionsListWidget.Entry> {
         this.renderSelection = false;
     }
 
-    public OptionsListWidget(ConfigScreen owner, Minecraft client, int width, int height, int x, int y, int entryHeight) {
+    public OptionsListWidget(ConfigScreenBase owner, Minecraft client, int width, int height, int x, int y, int entryHeight) {
         this(owner, client, width, height, x, y, entryHeight, null);
     }
 
@@ -142,11 +142,7 @@ public class OptionsListWidget extends AbstractList<OptionsListWidget.Entry> {
     }
 
     public abstract static class Entry extends AbstractList.AbstractListEntry<Entry> {
-        protected final Minecraft client;
-
-        protected Entry() {
-            this.client = Minecraft.getInstance();
-        }
+        protected Entry() {}
 
         @Override
         public abstract void render(int index, int rowTop, int rowLeft, int width, int height, int mouseX, int mouseY, boolean hovered, float deltaTime);

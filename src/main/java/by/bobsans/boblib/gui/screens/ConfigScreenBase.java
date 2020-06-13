@@ -1,5 +1,6 @@
 package by.bobsans.boblib.gui.screens;
 
+import by.bobsans.boblib.Reference;
 import by.bobsans.boblib.gui.widgets.OptionsListWidget;
 import by.bobsans.boblib.gui.widgets.value.OptionsEntryValue;
 import com.google.common.collect.Lists;
@@ -13,7 +14,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-public abstract class ConfigScreen extends BaseScreen {
+public abstract class ConfigScreenBase extends ScreenBase {
     private final Runnable saver;
     private final Runnable canceller;
 
@@ -21,13 +22,18 @@ public abstract class ConfigScreen extends BaseScreen {
     private OptionsListWidget.Entry lastSelected = null;
     private int tooltipCounter = 0;
 
-    public  String languageKeyPrefix;
-
-    private ConfigScreen(Screen parent, String languageKeyPrefix, Runnable saver, Runnable canceller) {
+    public ConfigScreenBase(Screen parent, String languageKeyPrefix, Runnable saver, Runnable canceller) {
         super(parent, new TranslationTextComponent(languageKeyPrefix + ".config.title"));
-        this.languageKeyPrefix = languageKeyPrefix;
         this.saver = saver;
         this.canceller = canceller;
+    }
+
+    public ConfigScreenBase(Screen parent, String languageKeyPrefix) {
+        this(parent, languageKeyPrefix, null, null);
+    }
+
+    public ConfigScreenBase(Screen parent) {
+        this(parent, Reference.MODID, null, null);
     }
 
     @Override
@@ -108,5 +114,5 @@ public abstract class ConfigScreen extends BaseScreen {
         children.add(listener);
     }
 
-    abstract OptionsListWidget fillOptions(OptionsListWidget widget);
+    protected abstract OptionsListWidget fillOptions(OptionsListWidget widget);
 }

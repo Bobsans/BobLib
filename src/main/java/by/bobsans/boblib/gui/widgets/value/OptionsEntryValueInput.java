@@ -1,6 +1,7 @@
 package by.bobsans.boblib.gui.widgets.value;
 
 import by.bobsans.boblib.gui.widgets.WatchedTextField;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 
@@ -12,7 +13,7 @@ public abstract class OptionsEntryValueInput<T> extends OptionsEntryValue<T> {
     OptionsEntryValueInput(String optionName, T value, Consumer<T> save) {
         super(optionName, value, save);
 
-        textField = new WatchedTextField(this, client.fontRenderer, 0, 0, 138, 18);
+        textField = new WatchedTextField(this, Minecraft.getInstance().fontRenderer, 0, 0, 138, 18);
         textField.setMaxStringLength(256);
         textField.setText(String.valueOf(value));
     }

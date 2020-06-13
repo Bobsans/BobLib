@@ -1,6 +1,6 @@
 package by.bobsans.boblib;
 
-import by.bobsans.boblib.network.Networking;
+import by.bobsans.boblib.network.NetworkingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -19,6 +19,6 @@ public class BobLib {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        Networking.init();
+        NetworkingManager.init();
     }
 }

@@ -1,6 +1,8 @@
 package by.bobsans.boblib.gui.widgets.value;
 
 import by.bobsans.boblib.gui.widgets.OptionsListWidget;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.util.text.TextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -28,7 +30,8 @@ public abstract class OptionsEntryValue<T> extends OptionsListWidget.Entry {
 
     @Override
     public final void render(int index, int rowTop, int rowLeft, int width, int height, int mouseX, int mouseY, boolean hovered, float deltaTime) {
-        client.fontRenderer.drawStringWithShadow(title.getFormattedText(), rowLeft + 10, rowTop + (height / 4.0f) + (client.fontRenderer.FONT_HEIGHT / 2.0f), 16777215);
+        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+        fontRenderer.drawStringWithShadow(title.getFormattedText(), rowLeft + 10, rowTop + (height / 4.0f) + (fontRenderer.FONT_HEIGHT / 2.0f), 16777215);
         drawValue(width, height, rowLeft, rowTop, mouseX, mouseY, hovered, deltaTime);
         this.x = rowLeft;
     }

@@ -5,10 +5,10 @@ import net.minecraft.util.text.ITextComponent;
 
 import java.util.Objects;
 
-public abstract class BaseScreen extends Screen {
+public abstract class ScreenBase extends Screen {
     private final Screen parent;
 
-    protected BaseScreen(Screen parent, ITextComponent title) {
+    protected ScreenBase(Screen parent, ITextComponent title) {
         super(title);
         this.parent = parent;
     }
