@@ -16,9 +16,9 @@ public class BobLib {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
         MinecraftForge.EVENT_BUS.register(this);
-    }
 
-    private void setup(final FMLCommonSetupEvent event) {
         NetworkingManager.init();
     }
+
+    private void setup(final FMLCommonSetupEvent event) {}
 }
