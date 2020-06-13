@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[28,)"
+
+[[mods]]
+    modId="boblib"
+    version="0.1.0"
+    displayName="BobLib"
+    updateJSONURL="https://minecraft.darkboy.ru/api/check-mod-updates/boblib.json"
+    displayURL="https://minecraft.darkboy.ru/mods/boblib"
+    credits="Library for other mods."
+    authors="Bobsans"
+    description='''Provides functional for use in other mods.'''
+
+    [[dependencies.armorstatushud]]
+        modId="forge"
+        mandatory=true
+        versionRange="[28,)"
+        ordering="NONE"
+        side="BOTH"
+
+    [[dependencies.armorstatushud]]
+        modId="minecraft"
+        mandatory=true
+        versionRange="[1.14.4]"
+        ordering="NONE"
+        side="BOTH"
