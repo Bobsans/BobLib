@@ -46,7 +46,7 @@ public abstract class ConfigScreenBase extends ScreenBase {
         children.add(options);
         setFocused(options);
 
-        addButton(new Button(width / 2 - 100, height - 25, 100, 20, I18n.format("gui.done"), w -> {
+        addButton(new Button(width / 2 - 100, height - 25, 100, 20, I18n.format("gui.done"), (w) -> {
             options.save();
             if (saver != null) {
                 saver.run();
@@ -54,7 +54,7 @@ public abstract class ConfigScreenBase extends ScreenBase {
             onClose();
         }));
 
-        addButton(new Button(width / 2 + 5, height - 25, 100, 20, I18n.format("gui.cancel"), w -> {
+        addButton(new Button(width / 2 + 5, height - 25, 100, 20, I18n.format("gui.cancel"), (w) -> {
             if (canceller != null) {
                 canceller.run();
             }
