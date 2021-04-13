@@ -8,7 +8,7 @@ public class OptionsEntryValueDouble extends OptionsEntryValueInput<Double> {
     private OptionsEntryValueDouble(String optionName, Double value, Consumer<Double> save) {
         super(optionName, value, save);
 
-        textField.setValidator((s) -> s.matches("^[0-9.]*$"));
+        textField.setFilter((s) -> s.matches("^[0-9.]*$"));
     }
 
     public OptionsEntryValueDouble(String langKeyPrefix, ForgeConfigSpec.DoubleValue spec) {

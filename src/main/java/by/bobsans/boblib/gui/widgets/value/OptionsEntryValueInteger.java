@@ -8,7 +8,7 @@ public class OptionsEntryValueInteger extends OptionsEntryValueInput<Integer> {
     private OptionsEntryValueInteger(String optionName, Integer value, Consumer<Integer> save) {
         super(optionName, value, save);
 
-        textField.setValidator((s) -> s.matches("^[0-9]*$"));
+        textField.setFilter((s) -> s.matches("^[0-9]*$"));
     }
 
     public OptionsEntryValueInteger(String langKeyPrefix, ForgeConfigSpec.IntValue spec) {

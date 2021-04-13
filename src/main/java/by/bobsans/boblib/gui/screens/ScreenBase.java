@@ -14,7 +14,7 @@ public abstract class ScreenBase extends Screen {
     @Override
     public void onClose() {
         if (minecraft != null) {
-            minecraft.displayGuiScreen(parent);
+            minecraft.setScreen(parent);
         }
     }
 }

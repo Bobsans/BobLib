@@ -1,26 +1,27 @@
 modLoader="javafml"
-loaderVersion="${forge_version_map}"
+loaderVersion="[36,)"
+license="MIT"
 
 [[mods]]
-    modId="${mod_id}"
-    version="${mod_version}"
-    displayName="${mod_name}"
-    updateJSONURL="${mod_update_url}"
-    displayURL="${mod_url}"
-    credits="${mod_credits}"
-    authors="${mod_author}"
-    description='''${mod_description}'''
+    modId="boblib"
+    version="0.2.0"
+    displayName="BobLib"
+    updateJSONURL="https://minecraft.darkboy.ru/api/check-mod-updates/boblib.json"
+    displayURL="https://minecraft.darkboy.ru/mods/boblib"
+    credits="Library for Bobsans mods"
+    authors="Bobsans"
+    description='''Provides functionality for use in Bobsans mods'''
 
-    [[dependencies.armorstatushud]]
+    [[dependencies.boblib]]
         modId="forge"
         mandatory=true
-        versionRange="${forge_version_map}"
+        versionRange="[36,)"
         ordering="NONE"
         side="BOTH"
 
-    [[dependencies.armorstatushud]]
+    [[dependencies.boblib]]
         modId="minecraft"
         mandatory=true
-        versionRange="${minecraft_version_map}"
+        versionRange="[1.16.5,1.17)"
         ordering="NONE"
         side="BOTH"

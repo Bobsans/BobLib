@@ -1,6 +1,7 @@
 package by.bobsans.boblib.gui.widgets.value;
 
 import by.bobsans.boblib.gui.widgets.OptionsListWidget;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IGuiEventListener;
@@ -29,10 +30,10 @@ public abstract class OptionsEntryValue<T> extends OptionsListWidget.Entry {
     }
 
     @Override
-    public final void render(int index, int rowTop, int rowLeft, int width, int height, int mouseX, int mouseY, boolean hovered, float deltaTime) {
-        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-        fontRenderer.drawStringWithShadow(title.getFormattedText(), rowLeft + 10, rowTop + (height / 4.0f) + (fontRenderer.FONT_HEIGHT / 2.0f), 16777215);
-        drawValue(width, height, rowLeft, rowTop, mouseX, mouseY, hovered, deltaTime);
+    public final void render(MatrixStack stack, int index, int rowTop, int rowLeft, int width, int height, int mouseX, int mouseY, boolean hovered, float deltaTime) {
+        FontRenderer fontRenderer = Minecraft.getInstance().font;
+        fontRenderer.draw(stack, title, rowLeft + 10, rowTop + (height / 4.0f) + (fontRenderer.lineHeight / 2.0f), 16777215);
+        drawValue(stack, width, height, rowLeft, rowTop, mouseX, mouseY, hovered, deltaTime);
         this.x = rowLeft;
     }
 
@@ -56,5 +57,5 @@ public abstract class OptionsEntryValue<T> extends OptionsListWidget.Entry {
         return x;
     }
 
-    protected abstract void drawValue(int entryWidth, int entryHeight, int x, int y, int mouseX, int mouseY, boolean selected, float partialTicks);
+    protected abstract void drawValue(MatrixStack stack, int entryWidth, int entryHeight, int x, int y, int mouseX, int mouseY, boolean selected, float partialTicks);
 }

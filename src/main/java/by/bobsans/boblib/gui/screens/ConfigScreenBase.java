@@ -3,16 +3,16 @@ package by.bobsans.boblib.gui.screens;
 import by.bobsans.boblib.Reference;
 import by.bobsans.boblib.gui.widgets.OptionsListWidget;
 import by.bobsans.boblib.gui.widgets.value.OptionsEntryValue;
-import com.google.common.collect.Lists;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
 
 public abstract class ConfigScreenBase extends ScreenBase {
     private final Runnable saver;
@@ -46,7 +46,7 @@ public abstract class ConfigScreenBase extends ScreenBase {
         children.add(options);
         setFocused(options);
 
-        addButton(new Button(width / 2 - 100, height - 25, 100, 20, I18n.format("gui.done"), (w) -> {
+        addButton(new Button(width / 2 - 100, height - 25, 100, 20, new TranslationTextComponent("gui.done"), (w) -> {
             options.save();
             if (saver != null) {
                 saver.run();
@@ -54,7 +54,7 @@ public abstract class ConfigScreenBase extends ScreenBase {
             onClose();
         }));
 
-        addButton(new Button(width / 2 + 5, height - 25, 100, 20, I18n.format("gui.cancel"), (w) -> {
+        addButton(new Button(width / 2 + 5, height - 25, 100, 20, new TranslationTextComponent("gui.cancel"), (w) -> {
             if (canceller != null) {
                 canceller.run();
             }
@@ -63,14 +63,15 @@ public abstract class ConfigScreenBase extends ScreenBase {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        renderBackground();
+    @ParametersAreNonnullByDefault
+    public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(stack);
 
-        options.render(mouseX, mouseY, partialTicks);
+        options.render(stack, mouseX, mouseY, partialTicks);
 
-        drawCenteredString(font, title.getFormattedText(), width / 2, 12, 16777215);
+        drawCenteredString(stack, font, title, width / 2, 12, 16777215);
 
-        super.render(mouseX, mouseY, partialTicks);
+        super.render(stack, mouseX, mouseY, partialTicks);
 
         if (mouseY < 32 || mouseY > height - 32) {
             return;
@@ -91,16 +92,16 @@ public abstract class ConfigScreenBase extends ScreenBase {
 
             OptionsEntryValue<?> value = (OptionsEntryValue<?>) entry;
 
-            if (I18n.hasKey(value.getDescription())) {
+            if (I18n.exists(value.getDescription())) {
                 int valueX = value.getX() + 10;
-                String title = value.getTitle().getFormattedText();
-                if (mouseX < valueX || mouseX > valueX + font.getStringWidth(title)) {
+                ITextComponent title = value.getTitle();
+                if (mouseX < valueX || mouseX > valueX + font.width(title)) {
                     return;
                 }
 
-                List<String> tooltip = Lists.newArrayList(title);
-                tooltip.addAll(font.listFormattedStringToWidth(I18n.format(value.getDescription()), 200));
-                renderTooltip(tooltip, mouseX, mouseY);
+                if (minecraft != null) {
+                    renderTooltip(stack, minecraft.font.split(new TranslationTextComponent(value.getDescription()), 200), mouseX, mouseY);
+                }
             }
         }
     }
