@@ -81,8 +81,11 @@ jar {
 jar.finalizedBy('reobfJar')
 
 task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'deobf'
+    from(sourceSets.main.output) {
+        classifier = 'deobf'
+    }
 }
 
-build.dependsOn deobfJar
+artifacts {
+    archives deobfJar
+}
