@@ -2,12 +2,14 @@ package by.bobsans.boblib.gui.widgets;
 
 import by.bobsans.boblib.gui.screens.ConfigScreenBase;
 import by.bobsans.boblib.gui.widgets.value.OptionsEntryValue;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.widget.list.AbstractList;
+import net.minecraft.client.gui.components.AbstractSelectionList;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import org.jetbrains.annotations.NotNull;
 
-public class OptionsListWidget extends AbstractList<OptionsListWidget.Entry> {
+public class OptionsListWidget extends AbstractSelectionList<OptionsListWidget.Entry> {
     private final ConfigScreenBase owner;
     private final Runnable diskWriter;
 
@@ -52,20 +54,23 @@ public class OptionsListWidget extends AbstractList<OptionsListWidget.Entry> {
         }
     }
 
-    public void add(Entry entry) {
+    public int addEntry(@NotNull Entry entry) {
         if (entry instanceof OptionsEntryValue) {
-            IGuiEventListener element = ((OptionsEntryValue<?>) entry).getListener();
+            AbstractWidget element = ((OptionsEntryValue<?>) entry).getListener();
             if (element != null) {
                 owner.addListener(element);
             }
         }
-        addEntry(entry);
+        return super.addEntry(entry);
     }
 
-    public abstract static class Entry extends AbstractList.AbstractListEntry<Entry> {
+    @Override
+    public void updateNarration(@NotNull NarrationElementOutput output) {}
+
+    public abstract static class Entry extends AbstractSelectionList.Entry<Entry> {
         protected Entry() {}
 
         @Override
-        public abstract void render(MatrixStack stack, int index, int rowTop, int rowLeft, int width, int height, int mouseX, int mouseY, boolean hovered, float deltaTime);
+        public abstract void render(@NotNull PoseStack stack, int index, int rowTop, int rowLeft, int width, int height, int mouseX, int mouseY, boolean hovered, float deltaTime);
     }
 }

@@ -1,6 +1,6 @@
 {
     "pack": {
-        "pack_format": 6,
-        "description": "BobLib"
+        "description": "BobLib resources",
+        "pack_format": 9
     }
 }

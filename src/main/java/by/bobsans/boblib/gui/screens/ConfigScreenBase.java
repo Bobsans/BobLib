@@ -3,18 +3,16 @@ package by.bobsans.boblib.gui.screens;
 import by.bobsans.boblib.Reference;
 import by.bobsans.boblib.gui.widgets.OptionsListWidget;
 import by.bobsans.boblib.gui.widgets.value.OptionsEntryValue;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.BaseComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-public abstract class ConfigScreenBase extends ScreenBase {
+public abstract class ConfigScreenBase extends Screen {
     private final Runnable saver;
     private final Runnable canceller;
 
@@ -22,31 +20,28 @@ public abstract class ConfigScreenBase extends ScreenBase {
     private OptionsListWidget.Entry lastSelected = null;
     private int tooltipCounter = 0;
 
-    public ConfigScreenBase(Screen parent, String languageKeyPrefix, Runnable saver, Runnable canceller) {
-        super(parent, new TranslationTextComponent(languageKeyPrefix + ".config.title"));
+    public ConfigScreenBase(String languageKeyPrefix, Runnable saver, Runnable canceller) {
+        super(new TranslatableComponent(languageKeyPrefix + ".config.title"));
         this.saver = saver;
         this.canceller = canceller;
     }
 
-    public ConfigScreenBase(Screen parent, String languageKeyPrefix) {
-        this(parent, languageKeyPrefix, null, null);
+    public ConfigScreenBase(String languageKeyPrefix) {
+        this(languageKeyPrefix, null, null);
     }
 
-    public ConfigScreenBase(Screen parent) {
-        this(parent, Reference.MODID, null, null);
+    public ConfigScreenBase() {
+        this(Reference.MODID, null, null);
     }
 
     @Override
-    @ParametersAreNonnullByDefault
-    public void init(Minecraft minecraft, int width, int height) {
-        super.init(minecraft, width, height);
-
+    protected void init() {
         options = fillOptions(new OptionsListWidget(this, minecraft, width, height, 32, height - 32, 28));
 
-        children.add(options);
+        addRenderableWidget(options);
         setFocused(options);
 
-        addButton(new Button(width / 2 - 100, height - 25, 100, 20, new TranslationTextComponent("gui.done"), (w) -> {
+        addRenderableWidget(new Button(width / 2 - 100, height - 25, 100, 20, new TranslatableComponent("gui.done"), (w) -> {
             options.save();
             if (saver != null) {
                 saver.run();
@@ -54,7 +49,7 @@ public abstract class ConfigScreenBase extends ScreenBase {
             onClose();
         }));
 
-        addButton(new Button(width / 2 + 5, height - 25, 100, 20, new TranslationTextComponent("gui.cancel"), (w) -> {
+        addRenderableWidget(new Button(width / 2 + 5, height - 25, 100, 20, new TranslatableComponent("gui.cancel"), (w) -> {
             if (canceller != null) {
                 canceller.run();
             }
@@ -63,8 +58,7 @@ public abstract class ConfigScreenBase extends ScreenBase {
     }
 
     @Override
-    @ParametersAreNonnullByDefault
-    public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         renderBackground(stack);
 
         options.render(stack, mouseX, mouseY, partialTicks);
@@ -78,7 +72,7 @@ public abstract class ConfigScreenBase extends ScreenBase {
         }
 
         OptionsListWidget.Entry entry = options.getSelected();
-        if (entry instanceof OptionsEntryValue) {
+        if (entry instanceof OptionsEntryValue<?> value) {
             if (lastSelected == entry) {
                 if (tooltipCounter > 0) {
                     tooltipCounter--;
@@ -90,17 +84,15 @@ public abstract class ConfigScreenBase extends ScreenBase {
                 return;
             }
 
-            OptionsEntryValue<?> value = (OptionsEntryValue<?>) entry;
-
             if (I18n.exists(value.getDescription())) {
                 int valueX = value.getX() + 10;
-                ITextComponent title = value.getTitle();
+                BaseComponent title = value.getTitle();
                 if (mouseX < valueX || mouseX > valueX + font.width(title)) {
                     return;
                 }
 
                 if (minecraft != null) {
-                    renderTooltip(stack, minecraft.font.split(new TranslationTextComponent(value.getDescription()), 200), mouseX, mouseY);
+                    renderTooltip(stack, minecraft.font.split(new TranslatableComponent(value.getDescription()), 200), mouseX, mouseY);
                 }
             }
         }
@@ -111,8 +103,8 @@ public abstract class ConfigScreenBase extends ScreenBase {
         options.mouseMoved(x, y);
     }
 
-    public void addListener(IGuiEventListener listener) {
-        children.add(listener);
+    public void addListener(AbstractWidget listener) {
+        addWidget(listener);
     }
 
     protected abstract OptionsListWidget fillOptions(OptionsListWidget widget);

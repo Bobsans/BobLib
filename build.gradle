@@ -1,32 +1,36 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
+        maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
-apply plugin: 'net.minecraftforge.gradle'
+
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
+apply plugin: 'net.minecraftforge.gradle'
 
-version = '0.2.0'
+version = "0.3.0"
 group = 'by.bobsans.boblib'
-archivesBaseName = "[1.16.5] BobLib"
+archivesBaseName = "[1.18.2] BobLib"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 
 minecraft {
-    mappings channel: 'official', version: '1.16.5'
+    mappings channel: 'official', version: '1.18.2'
+
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
-            properties 'forge.logging.markers': 'REGISTRIES'
-            properties 'forge.logging.console.level': 'debug'
             workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'examplemod'
+
             mods {
                 boblib {
                     source sourceSets.main
@@ -38,6 +42,21 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'examplemod'
+
+            mods {
+                boblib {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        gameTestServer {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'examplemod'
+
             mods {
                 boblib {
                     source sourceSets.main
@@ -49,7 +68,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'boblib', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'boblib', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 boblib {
@@ -60,8 +79,16 @@ minecraft {
     }
 }
 
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
-    minecraft "net.minecraftforge:forge:1.16.5-36.1.2"
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.0'
 }
 
 jar {
@@ -69,9 +96,9 @@ jar {
         attributes([
             "Specification-Title"     : "BobLib",
             "Specification-Vendor"    : "Bobsans",
-            "Specification-Version"   : "1.16.5-0.2.0",
+            "Specification-Version"   : "1",
             "Implementation-Title"    : project.name,
-            "Implementation-Version"  : "${archiveVersion}",
+            "Implementation-Version"  : project.jar.archiveVersion,
             "Implementation-Vendor"   : "Bobsans",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
@@ -80,12 +107,23 @@ jar {
 
 jar.finalizedBy('reobfJar')
 
-task deobfJar(type: Jar) {
-    from(sourceSets.main.output) {
-        classifier = 'deobf'
+artifacts {
+    archives deobfJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
     }
 }
 
-artifacts {
-    archives deobfJar
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }
