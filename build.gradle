@@ -107,10 +107,6 @@ jar {
 
 jar.finalizedBy('reobfJar')
 
-artifacts {
-    archives deobfJar
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
