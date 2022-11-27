@@ -1,10 +1,10 @@
 modLoader="javafml"
-loaderVersion="[40,)"
+loaderVersion="[43,)"
 license="All rights reserved"
 
 [[mods]]
     modId="boblib"
-    version="0.3.0"
+    version="0.3.1"
     displayName="BobLib"
     updateJSONURL="https://minecraft.darkboy.ru/api/check-mod-updates/boblib.json"
     displayURL="https://minecraft.darkboy.ru/mods/boblib"
@@ -15,13 +15,13 @@ license="All rights reserved"
     [[dependencies.boblib]]
         modId="forge"
         mandatory=true
-        versionRange="[40,)"
+        versionRange="[43,)"
         ordering="NONE"
         side="BOTH"
 
     [[dependencies.boblib]]
         modId="minecraft"
         mandatory=true
-        versionRange="[1.18.2,1.19)"
+        versionRange="[1.19.2,1.20)"
         ordering="NONE"
         side="BOTH"

@@ -8,7 +8,14 @@ import java.nio.file.Path;
 
 public abstract class ConfigBase {
     protected static void loadConfig(ForgeConfigSpec spec, Path path) {
-        CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave().autoreload().writingMode(WritingMode.REPLACE).build();
+        CommentedFileConfig configData = CommentedFileConfig
+            .builder(path)
+            .sync()
+            .autosave()
+            .autoreload()
+            .writingMode(WritingMode.REPLACE)
+            .build();
+
         configData.load();
         spec.setConfig(configData);
     }

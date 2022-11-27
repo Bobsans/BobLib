@@ -3,7 +3,7 @@ package by.bobsans.boblib.gui.widgets;
 import by.bobsans.boblib.gui.widgets.value.OptionsEntryValueInput;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -11,7 +11,7 @@ public class WatchedTextField extends EditBox {
     private final OptionsEntryValueInput<?> watcher;
 
     public WatchedTextField(OptionsEntryValueInput<?> watcher, Font font, int x, int y, int width, int height) {
-        super(font, x, y, width, height, new TextComponent(""));
+        super(font, x, y, width, height, Component.literal(""));
         this.watcher = watcher;
     }
 

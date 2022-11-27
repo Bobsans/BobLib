@@ -5,8 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.network.chat.BaseComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,13 +13,13 @@ import java.util.function.Consumer;
 
 public abstract class OptionsEntryValue<T> extends OptionsListWidget.Entry {
     private final Consumer<T> save;
-    private final BaseComponent title;
+    private final Component title;
     private final String description;
     T value;
     private int x;
 
     OptionsEntryValue(String optionName, T value, Consumer<T> save) {
-        this.title = new TranslatableComponent(optionName);
+        this.title = Component.translatable(optionName);
         this.description = optionName + ".desc";
         this.value = value;
         this.save = save;
@@ -46,7 +45,7 @@ public abstract class OptionsEntryValue<T> extends OptionsListWidget.Entry {
         return null;
     }
 
-    public BaseComponent getTitle() {
+    public Component getTitle() {
         return title;
     }
 

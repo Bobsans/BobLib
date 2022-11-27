@@ -8,8 +8,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.BaseComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class ConfigScreenBase extends Screen {
@@ -21,7 +20,7 @@ public abstract class ConfigScreenBase extends Screen {
     private int tooltipCounter = 0;
 
     public ConfigScreenBase(String languageKeyPrefix, Runnable saver, Runnable canceller) {
-        super(new TranslatableComponent(languageKeyPrefix + ".config.title"));
+        super(Component.translatable(languageKeyPrefix + ".config.title"));
         this.saver = saver;
         this.canceller = canceller;
     }
@@ -41,7 +40,7 @@ public abstract class ConfigScreenBase extends Screen {
         addRenderableWidget(options);
         setFocused(options);
 
-        addRenderableWidget(new Button(width / 2 - 100, height - 25, 100, 20, new TranslatableComponent("gui.done"), (w) -> {
+        addRenderableWidget(new Button(width / 2 - 100, height - 25, 100, 20, Component.translatable("gui.done"), (w) -> {
             options.save();
             if (saver != null) {
                 saver.run();
@@ -49,7 +48,7 @@ public abstract class ConfigScreenBase extends Screen {
             onClose();
         }));
 
-        addRenderableWidget(new Button(width / 2 + 5, height - 25, 100, 20, new TranslatableComponent("gui.cancel"), (w) -> {
+        addRenderableWidget(new Button(width / 2 + 5, height - 25, 100, 20, Component.translatable("gui.cancel"), (w) -> {
             if (canceller != null) {
                 canceller.run();
             }
@@ -86,13 +85,13 @@ public abstract class ConfigScreenBase extends Screen {
 
             if (I18n.exists(value.getDescription())) {
                 int valueX = value.getX() + 10;
-                BaseComponent title = value.getTitle();
+                Component title = value.getTitle();
                 if (mouseX < valueX || mouseX > valueX + font.width(title)) {
                     return;
                 }
 
                 if (minecraft != null) {
-                    renderTooltip(stack, minecraft.font.split(new TranslatableComponent(value.getDescription()), 200), mouseX, mouseY);
+                    renderTooltip(stack, minecraft.font.split(Component.translatable(value.getDescription()), 200), mouseX, mouseY);
                 }
             }
         }
