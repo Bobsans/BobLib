@@ -4,12 +4,17 @@ import by.bobsans.boblib.Reference;
 import by.bobsans.boblib.gui.widgets.OptionsListWidget;
 import by.bobsans.boblib.gui.widgets.value.OptionsEntryValue;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.BiFunction;
 
 public abstract class ConfigScreenBase extends Screen {
     private final Runnable saver;
@@ -30,7 +35,7 @@ public abstract class ConfigScreenBase extends Screen {
     }
 
     public ConfigScreenBase() {
-        this(Reference.MODID, null, null);
+        this(Reference.MOD_ID, null, null);
     }
 
     @Override
@@ -107,4 +112,15 @@ public abstract class ConfigScreenBase extends Screen {
     }
 
     protected abstract OptionsListWidget fillOptions(OptionsListWidget widget);
+
+    public static void register(String modId, BiFunction<Minecraft, Screen, ConfigScreenBase> screenFactory) {
+        ModList.get()
+            .getModContainerById(modId)
+            .ifPresent((consumer) ->
+                consumer.registerExtensionPoint(
+                    ConfigScreenHandler.ConfigScreenFactory.class,
+                    () -> new ConfigScreenHandler.ConfigScreenFactory(screenFactory::apply)
+                )
+            );
+    }
 }

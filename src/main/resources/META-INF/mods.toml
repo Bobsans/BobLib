@@ -4,7 +4,7 @@ license="All rights reserved"
 
 [[mods]]
     modId="boblib"
-    version="0.3.1"
+    version="0.3.2"
     displayName="BobLib"
     updateJSONURL="https://minecraft.darkboy.ru/api/check-mod-updates/boblib.json"
     displayURL="https://minecraft.darkboy.ru/mods/boblib"

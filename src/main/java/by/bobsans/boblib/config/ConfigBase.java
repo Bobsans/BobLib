@@ -6,7 +6,9 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.nio.file.Path;
 
+@Deprecated
 public abstract class ConfigBase {
+    @Deprecated
     protected static void loadConfig(ForgeConfigSpec spec, Path path) {
         CommentedFileConfig configData = CommentedFileConfig
             .builder(path)

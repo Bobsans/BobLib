@@ -2,5 +2,5 @@ package by.bobsans.boblib;
 
 import net.minecraftforge.fml.common.Mod;
 
-@Mod(Reference.MODID)
+@Mod(Reference.MOD_ID)
 public class BobLib {}
