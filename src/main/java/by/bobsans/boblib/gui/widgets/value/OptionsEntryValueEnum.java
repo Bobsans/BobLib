@@ -15,7 +15,10 @@ public class OptionsEntryValueEnum<T extends Enum<T>> extends OptionsEntryValue<
     private OptionsEntryValueEnum(String optionName, T[] values, T selected, Consumer<T> save) {
         super(optionName, selected, save);
 
-        this.button = new Button(0, 0, 140, 20, Component.literal(selected.name().toUpperCase(Locale.ROOT)), (btn) -> value = values[(value.ordinal() + 1) % values.length]);
+        this.button = Button
+            .builder(Component.literal(selected.name().toUpperCase(Locale.ROOT)), (btn) -> value = values[(value.ordinal() + 1) % values.length])
+            .bounds(0, 0, 140, 20)
+            .build();
     }
 
     public OptionsEntryValueEnum(String langKeyPrefix, ForgeConfigSpec.EnumValue<T> spec, T[] values) {
@@ -24,8 +27,8 @@ public class OptionsEntryValueEnum<T extends Enum<T>> extends OptionsEntryValue<
 
     @Override
     protected void drawValue(PoseStack stack, int entryWidth, int entryHeight, int x, int y, int mouseX, int mouseY, boolean selected, float partialTicks) {
-        this.button.x = x + entryWidth - 160;
-        this.button.y = y + entryHeight / 6;
+        this.button.setX(x + entryWidth - 160);
+        this.button.setY(y + entryHeight / 6);
         this.button.setMessage(Component.literal(value.name().toUpperCase(Locale.ROOT)));
         this.button.render(stack, mouseX, mouseY, partialTicks);
     }

@@ -45,20 +45,20 @@ public abstract class ConfigScreenBase extends Screen {
         addRenderableWidget(options);
         setFocused(options);
 
-        addRenderableWidget(new Button(width / 2 - 100, height - 25, 100, 20, Component.translatable("gui.done"), (w) -> {
+        addRenderableWidget(Button.builder(Component.translatable("gui.done"), (btn) -> {
             options.save();
             if (saver != null) {
                 saver.run();
             }
             onClose();
-        }));
+        }).bounds(width / 2 - 100, height - 25, 100, 20).build());
 
-        addRenderableWidget(new Button(width / 2 + 5, height - 25, 100, 20, Component.translatable("gui.cancel"), (w) -> {
+        addRenderableWidget(Button.builder(Component.translatable("gui.cancel"), (btn) -> {
             if (canceller != null) {
                 canceller.run();
             }
             onClose();
-        }));
+        }).bounds(width / 2 + 5, height - 25, 100, 20).build());
     }
 
     @Override
